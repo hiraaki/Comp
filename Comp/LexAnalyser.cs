@@ -67,6 +67,9 @@ namespace Comp
                 check = s.Substring(startPosition, endPosition - startPosition);
             switch (check)
             {
+
+                case "print":
+                    return "<OUT>";
                 case "ProgramVar":
                     return "<PROGRAMVAR>";
                 case "if":
@@ -84,15 +87,15 @@ namespace Comp
                 case "break":
                     return "<BREAK>";
                 case "int":
-                    return "<INT>";
+                    return "<TYPE>";
                 case "real":
-                    return "<REAL>";
+                    return "<TYPE>";
                 case "double":
-                    return "<DOUBLE>";
+                    return "<TYPE>";
                 case "char":
-                    return "<CHAR>";
+                    return "<TYPE>";
                 case "bool":
-                    return "<BOOL>";
+                    return "<TYPE>";
                 case "true":
                     return "<TRUE>";
                 case "false":
@@ -100,7 +103,7 @@ namespace Comp
                 case "ProgramBody":
                     return "<PROGRAMBODY>";
             }
-            return ("<ID>");
+            return ("<ID>"+"<"+check+">");
 
         }
 
@@ -200,6 +203,7 @@ namespace Comp
                             Console.WriteLine("Failing Character {0} on state 1", s[i]);
                             goto FAILED;
                     }
+
                     STATE_1:
                     i++;
                     if (i < s.Length && char.IsLetterOrDigit(s[i]))
@@ -209,26 +213,30 @@ namespace Comp
                     tokens.Add(new Tuple<string, string>(ReservCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_3:
                     i++;
                     if (s[i] == '=')
                         goto STATE_5;
                     goto STATE_4;
+
                     STATE_4: //Reconhece o token
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
-
                     goto STATE_0;
+
                     STATE_5:
                     i++;
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_6:
                     i++;
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_7:
                     i++;
                     if (char.IsDigit(s[i]))
@@ -238,33 +246,39 @@ namespace Comp
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_8:
                     i++;
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_9:
                     i++;
                     if (s[i] == '&')
                         goto STATE_10;
                     Console.WriteLine("Failing Character {0} on state 9", s[i]);
                     goto FAILED;
+
                     STATE_10:
                     i++;
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_11:
                     i++;
                     if (s[i] == '|')
                         goto STATE_12;
                     Console.WriteLine("Failing Character {0} on state 12", s[i]);
                     goto FAILED;
+
                     STATE_12:
                     i++;
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_13:
                     i++;
                     if (char.IsDigit(s[i]))
@@ -272,6 +286,7 @@ namespace Comp
                     if (s[i] == '=')
                         goto STATE_5;
                     goto STATE_4;
+
                     STATE_14:
                     i++;
                     if (i < s.Length && char.IsDigit(s[i]))
@@ -281,6 +296,7 @@ namespace Comp
                     tokens.Add(new Tuple<string, string>("<number>",
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_15:
                     i++;
                     if (char.IsDigit(s[i]))
@@ -289,6 +305,7 @@ namespace Comp
                     }
                     Console.WriteLine($"Failing Character {s[i]} on state 16");
                     goto FAILED;
+
                     STATE_16:
                     i++;
                     if (i < s.Length && char.IsDigit(s[i]))
@@ -298,6 +315,7 @@ namespace Comp
                     tokens.Add(new Tuple<string, string>("<number>",
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_17:
                     i++;
                     if (i < s.Length && s[i] == '\\')
@@ -308,44 +326,53 @@ namespace Comp
                     if (i < s.Length && s[i] == '"')
                         goto STATE_18;
                     goto STATE_17;
+
                     STATE_18:
                     i++;
                     tokens.Add(new Tuple<string, string>("<string>",
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_19:
                     i++;
                     tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_20:
                     i++;
                     tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_21:
                     i++;
                     tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_22:
                     i++;
                     tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_23:
                     i++;
                     tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     STATE_24:
                     i++;
                     tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
+
                     FAILED:
                     Console.WriteLine($"Caracter inesperado encontrado na linha {y}");
                     throw new Exception("Falha ao tentar resolver alguns simbolos");
+
                     FINNISH:
                     Console.Write("");
                 }

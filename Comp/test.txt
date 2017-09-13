@@ -1,1 +1,8 @@
-int a
+ProgramVar{
+	int a
+	int b
+}
+ProgramBody{
+	a=a+b
+	print(a)
+}
