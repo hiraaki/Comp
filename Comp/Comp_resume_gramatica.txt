@@ -1,0 +1,49 @@
+<PROGRAM>-><PROGRAMVAR><PROGRAMBODY>
+
+<PROGRAMVAR>->"{"<ASSIGM>"}"
+
+<ASSIGM>-><TERMASG><ASSIGM>
+		|<TERMASG>
+<TERMASG>-><TYPEID><ID>“=”{NUM*|<ID>}<ASSIGM>";"
+<TYPEID>->"int"
+		|"double"
+		|"string"
+		|"bool"
+		
+<PROGRAMBODY>->"{"<STM>"}"
+
+<STM>->	<ATRIB>
+		|<IF>
+		|<FOR>
+		|<WHILE>
+		|<SWITCH>
+		|<OUT>
+		
+<STM> -> <ATRIB>-><ID> “=” {<ID>|<TYPE>|<AREXP>|<BOOLEXP>}
+
+<STM> -> <AREXP>-><ID><OPEXP><ID>
+		|<ARTERM><OPEXP><ID>		
+	<ARTERM>-><AREXP>
+	<OPEXPADD>-> + | - | \ | %
+	
+<STM> -> <LGEXP> -> <ID><OPEXP><ID>
+		|<ARTERM><OPEXP><ID>	
+	<ARTERM>-><AREXP>
+	<OPEXPADD>-> ! | ^ | && | || 
+	
+<STM> -> <REEXP> -> <ID><OPEXP><ID>
+		|<ARTERM><OPEXP><ID>	
+	<ARTERM>-><AREXP>
+	<OPEXPADD>-> > | < | >= | <= | != | ==
+	
+<STM> -> <IFTERM>
+		|<IFTERM><ELSETERM>
+	<IFTERM> -> if “(“  <exp> “)” than “{“ <stm> “}”
+	<ELSETERM> ->  else  “{“  <stm> “}”
+	
+<STM> -> switch “(” <ID> “)” “{” <case_term>+ “}”
+		<case_term> → case <ID> “:” <stm>  break
+		
+<stm> -> for “(“ <ID>”=”<ID> “;” <expR> “;” <ID>”++”  “)” “{“ <stm> “}”
+
+<stm> -> while “(“ (<expL> | <expR>) “)” “{“ <stm> “}”

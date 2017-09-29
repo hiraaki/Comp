@@ -1,0 +1,59 @@
+<PROGRAM>-><PROGRAMVAR><PROGRAMBODY>
+
+<PROGRAMVAR>->"{"<ASSIGM>"}"
+
+<ASSIGM>-><TERMASG><ASSIGM>
+		|<TERMASG>
+<TERMASG>-><TYPEID><ID>“=”{NUM*|<ID>}<ASSIGM>";"
+
+<TYPEID>->"int"
+		|"double"
+		|"string"
+		|"bool"
+
+<ID>-><CHAR><IDSTM>
+<IDSTM>-><CHAR>
+		|<CHAR><NUM><IDSTM>
+
+<TYPE>-><INT>
+		|<DOUBLE>
+		|<REAL>
+		|<STRING>
+		|<BOOL>
+
+<ID> -> <CHAR><STRTERM>
+<STR>-> "<STRTERM>"
+<STRTERM>-><CHAR><STRTERM>
+		|<NUM><STRTERM>
+		|
+
+<CHAR>->‘A’ | ‘B’ | ‘C’ | ‘D’ | ‘E’ | ‘F’ | ‘G’ | ‘H’ | ‘I’ | ‘J’ | ‘K’ 
+		| ‘L’ | ‘M’ | ‘N’ | ‘O’| ‘P’ | ‘Q’ | ‘R’ | ‘S’| ‘T’ | ‘U’ | ‘V’ 
+		| ‘W’ | ‘X’ | ‘Y’| ‘Z’ | ‘a’| ‘b’ | ‘c’ | ‘d’ | ‘e’| ‘f’ | ‘g’
+		| ‘h’ | ‘i’| ‘j’ | ‘k’ | ‘l’ | ‘m’ | ‘n’ | ‘o’ | ‘p’ | ‘q’ | ‘r’ 
+		| ‘s’ | ‘t’ | ‘u’ | ‘v’ | ‘w’| ‘x’ | ‘y’ | ‘z’ 
+		
+<NUM> -> ‘0’|’1’|’2’|’3’|’4’|’5’|’6’|’7’|’8’|’9’
+
+<INT> -><NUM>
+		|"-"<NUM>
+		|<NUM>
+		|<NUMTERM>		
+		|"-"<NUMTERM>		
+<NUMTERM>-><NUM><INT>
+		
+<DOUBLE>-><INT>"."<INT>
+
+<BOOL> -> F|T
+		
+<PROGRAMBODY>->"{"<STM>"}"
+
+<STM>->	<ATRIB>
+		|<IF>
+		|<FOR>
+		|<WHILE>
+		|<SWITCH>		
+		
+<ATRIB>-><ID> “=” {<ID>|<TYPE>|<AREXP>|<BOOLEXP>}
+
+<AREXP>-><>

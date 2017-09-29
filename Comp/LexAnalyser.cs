@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 namespace Comp
 {
     class LexAnalyser
@@ -12,122 +13,6 @@ namespace Comp
         public LexAnalyser(string path)
         {
             codeFile=path;
-        }
-
-
-        public static string OperatorCheck(string s, int startPosition, int endPosition)
-        {
-            string check = "";
-            if (Math.Max(startPosition, endPosition) <= s.Length)
-            {
-                check = s.Substring(startPosition, endPosition - startPosition);
-            }
-            switch (check)
-            {
-                case "+":
-                    return "<ADD>";                
-                case "-":
-                    return "<SUM>";
-                case "*":
-                    return "<MUL>";
-                case "/":
-                    return "<DIV>";
-                case "%":
-                    return "<MOD>";
-                case "!":
-                    return "<NOT";
-                case "&&":
-                    return "<LOP>";
-                case "||":
-                    return "<LOP>";
-                case ">":
-                    return "<ROP>";
-                case "<":
-                    return "<ROP>";
-                case ">=":
-                    return "<ROP>";
-                case "<=":
-                    return "<ROP>";
-                case "!=":
-                    return "<ROP>";
-                case "==":
-                    return "<ROP>";
-                case "=":
-                    return "<ATT>";
-            }
-
-            return "<ERROR>";
-        }
-
-        public static string ReservCheck(string s, int startPosition, int endPosition)
-        {
-            string check = "";
-            
-            if (Math.Max(startPosition, endPosition) <= s.Length)
-                check = s.Substring(startPosition, endPosition - startPosition);
-            switch (check)
-            {
-
-                case "print":
-                    return "<OUT>";
-                case "ProgramVar":
-                    return "<PROGRAMVAR>";
-                case "if":
-                    return "<IF>";
-                case "else":
-                    return "<ELSE>";
-                case "for":
-                    return "<FOR>";
-                case "while":
-                    return "<WHILE>";
-                case "case":
-                    return "<CASE>";
-                case "switch":
-                    return "<SWITCH>";
-                case "break":
-                    return "<BREAK>";
-                case "int":
-                    return "<TYPE>";
-                case "real":
-                    return "<TYPE>";
-                case "double":
-                    return "<TYPE>";
-                case "char":
-                    return "<TYPE>";
-                case "bool":
-                    return "<TYPE>";
-                case "true":
-                    return "<TRUE>";
-                case "false":
-                    return "<FALSE>";
-                case "ProgramBody":
-                    return "<PROGRAMBODY>";
-            }
-            return ("<ID>"+"<"+check+">");
-
-        }
-
-
-        public static string SpecialCheck(string s, int startPosition, int endPosition)
-        {
-            var check = "";
-            if (Math.Max(startPosition, endPosition) <= s.Length)
-                check = s.Substring(startPosition, endPosition - startPosition);
-            switch (check)
-            {
-                case "{":
-                    return "<OPBRACE>";
-                case "}":
-                    return "<CLBREACE>";
-                case "(":
-                    return "<OPPAR>";
-                case ")":
-                    return "<CLPAR>";
-                case ";":
-                    return "<ENDSTM>";
-            }
-            return ("<ERROR>");
-
         }
 
         public List<string> TokenGen()
@@ -210,7 +95,7 @@ namespace Comp
                     {
                         goto STATE_1;
                     }
-                    tokens.Add(new Tuple<string, string>(ReservCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>( Checker.Reserved(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
@@ -221,19 +106,19 @@ namespace Comp
                     goto STATE_4;
 
                     STATE_4: //Reconhece o token
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_5:
                     i++;
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_6:
                     i++;
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
@@ -243,13 +128,13 @@ namespace Comp
                     {
                         goto STATE_14;
                     }
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_8:
                     i++;
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
@@ -262,7 +147,7 @@ namespace Comp
 
                     STATE_10:
                     i++;
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
@@ -275,7 +160,7 @@ namespace Comp
 
                     STATE_12:
                     i++;
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
@@ -335,37 +220,37 @@ namespace Comp
 
                     STATE_19:
                     i++;
-                    tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Special(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_20:
                     i++;
-                    tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Special(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_21:
                     i++;
-                    tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Special(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_22:
                     i++;
-                    tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Special(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_23:
                     i++;
-                    tokens.Add(new Tuple<string, string>(SpecialCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Special(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
                     STATE_24:
                     i++;
-                    tokens.Add(new Tuple<string, string>(OperatorCheck(s, startPosition, i),
+                    tokens.Add(new Tuple<string, string>(Checker.Operator(s, startPosition, i),
                         s.Substring(startPosition, i - startPosition)));
                     goto STATE_0;
 
